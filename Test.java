@@ -1,3 +1,10 @@
+/** Notes:
+*** in process of updating to use graphstream ***
+This program uses the graphstream library
+Just include the jar files in classpath
+for example: java -cp "gs-algo-1.0/*:gs-core-1.0/*:gs-ui-1.0/*:lib/*" Test
+*/
+
 import java.util.*;
 import java.awt.*;
 
@@ -16,8 +23,5 @@ public class Test {
 			System.out.println(":)");
 		}
 		System.out.println(graph.getMaxFlow());
-		while (true) {
-			int i = 0;
-		}
 	}
 }

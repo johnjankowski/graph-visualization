@@ -1,3 +1,11 @@
+/** Notes:
+*** in process of updating to use graphstream ***
+This program uses the graphstream library
+Just include the jar files in classpath
+for example: javac -classpath "gs-algo-1.0/*:gs-core-1.0/*:gs-ui-1.0/*:lib/*" MakeGraph.java
+*/
+
+
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -19,7 +27,7 @@ public class MakeGraph {
 		vertices = n * n;
 		list = makeDirectedList(n);
 		caps = initializeCaps(vertices, maxCap);
-		Display d = new Display();
+		/* Display d = new Display(); */
 		s = 0;
 		t = vertices - 1;
 		/** test case 
@@ -226,7 +234,10 @@ public class MakeGraph {
 		return thisList;
 	}
 
-	private class Display extends JFrame {
+
+	/** Before using graphstream library 
+
+	public class Display extends JFrame {
 
 		public Display() {
 			Panel myPanel = new Panel();
@@ -236,13 +247,13 @@ public class MakeGraph {
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         	pack();
         	setVisible(true);
-		}
+		
 
 
-		private class Panel extends JPanel {
+		public class Panel extends JPanel {
 
 			public Panel() {
-				setPreferredSize(new Dimension(MakeGraph.Display.this.vertices, MakeGraph.Display.this.vertices));
+				setPreferredSize(new Dimension(10 * MakeGraph.this.vertices, 10 * MakeGraph.this.vertices));
 			}
 
 			@Override
@@ -250,10 +261,37 @@ public class MakeGraph {
         		Graphics2D g2 = (Graphics2D) g;
             	super.paintComponent(g2);
 				g2.setColor(Color.blue);
-	    		g2.drawRect(0,0,50,50);
+				for (Integer i : MakeGraph.this.list.keySet()) {
+					int x_pos = (int) ((i % Math.sqrt(MakeGraph.this.list.size())));
+					int y_pos = (int) ((i - (x_pos)) / Math.sqrt(MakeGraph.this.list.size()));
+					int scale = (int) (Math.sqrt(MakeGraph.this.vertices) * 10);
+					g2.drawOval(x_pos * scale + 10, y_pos * scale + 10, 30, 30);
+					g2.fillOval(x_pos * scale + 10, y_pos * scale + 10, 30, 30);
+					ArrayList<Integer> edges = MakeGraph.this.list.get(i);
+					for (Integer v : edges) {
+						//different cases for direction of edge
+						int edge_x_pos;
+						int edge_y_pos;
+						int to_x_pos = (int) ((v % Math.sqrt(MakeGraph.this.list.size())));
+						int to_y_pos = (int) ((v - (to_x_pos)) / Math.sqrt(MakeGraph.this.list.size()));
+						int width = (Math.max(to_x_pos, x_pos) - Math.min(to_x_pos, x_pos)) * scale;
+						int height = (Math.max(to_y_pos, y_pos) - Math.min(to_y_pos, y_pos)) * scale;
+						
+						if (width == 0) {
+							edge_x_pos = x_pos * scale + 10;
+							edge_y_pos = (int) ((to_y_pos + y_pos) / 2.0 * scale);
+							width = 30;
+						}
+						else {
+							edge_x_pos = (int) ((to_x_pos + x_pos) / 2.0 * scale);
+							edge_y_pos = y_pos * scale + 10;
+							height = 30;
+						}
+						g2.drawRect(edge_x_pos, edge_y_pos, width, height);
+					}
+				}
         	}
 		}
-	}
-
+	} */
 }
 
